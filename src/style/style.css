@@ -1,0 +1,72 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+html {
+  font-family: "Roboto", "sans-serif";
+  overflow-y: hidden;
+}
+
+body {
+  margin: 0;
+}
+
+#content {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+#word {
+  font-size: 4rem;
+  transition: margin-left 2s, margin-top 2s;
+}
+
+.input-word {
+  font-size: 1.5rem;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+.floating-action-button {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  display: flex;
+}
+.floating-action-button div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+  border-radius: 50%;
+  height: 64px;
+  width: 64px;
+  cursor: pointer;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+#file {
+  display: none;
+}
+
+#upload {
+  cursor: pointer;
+}
+
+.md-4 {
+  font-size: 4rem;
+}
+
+.md-3 {
+  font-size: 3rem;
+}
+
+#next-word {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=style.css.map */

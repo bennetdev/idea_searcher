@@ -1,7 +1,24 @@
-var search = "?" + location.search.substring(1);
+
+async function save() {
+    const result = await $.post("src/partials/save.php", get_current_json());
+    return result;
+}
+
+function get_current_json(){
+    var word = $("#word").text().trim();
+    var words = $(".input-word");
+    var json = {word: word, words: []}
+    for (var i = 0; i < words.length; i++){
+        var value = $(words[i]).val();
+        var left = $(words[i]).position().left;
+        var top = $(words[i]).position().top;
+        json.words.push({word: value, left: left, top: top})
+    }
+    return json;
+}
 
 async function get_random_word() {
-    const result = await $.post("src/partials/getRandomWord.php" + search);
+    const result = await $.post("src/partials/getRandomWord.php?" + search);
     return result;
 }
 async function get_json_by_file(file){
@@ -37,13 +54,14 @@ function json_to_page(json){
 
 }
 function append_input(left, top, word){
-    $("#content").append("<input type='text' placeholder='input' class='input-word' style='position: absolute; left: " + left + "; top: " + top + "' value='" + word + "'>");
+    var top_calc = top - $("#content").position().top;
+    $("#content").append("<input type='text' placeholder='input' class='input-word' style='position: absolute; left: " + left + "; top: " + top_calc + "' value='" + word + "'>");
     $("#content input:last-child").focus();
     $("#content").scrollLeft(0);
 }
 
 $(document).ready(function () {
-    get_random_word().then((response) => $("#word").html(response));
+    var carousel = new Carousel("#save-left", "#save-right", "#saves");
     $("#content").on("click", "#next-word", function () {
         get_random_word().then((response) => $("#word").html(response));
     })
@@ -54,21 +72,44 @@ $(document).ready(function () {
         append_input(e.pageX, e.pageY, "");
     })
     $("#download").click(function () {
-        var word = $("#word").text().trim();
-        var words = $(".input-word");
-        var json = {word: word, words: []}
-        for (var i = 0; i < words.length; i++){
-            var value = $(words[i]).val();
-            var left = $(words[i]).position().left;
-            var top = $(words[i]).position().top;
-            json.words.push({word: value, left: left, top: top})
-        }
-        download(word + ".json", JSON.stringify(json))
+        download(word + ".json", JSON.stringify(get_current_json()))
     })
     $("#file").change(function () {
         get_json_by_file($("#file").prop("files")[0]).then((response) => json_to_page(response));
     })
     $("body").on("change", ".input-word", function () {
         $(this).attr("size", $(this).val().length)
+    })
+    $(".save").click(function () {
+        if($(this).attr("id") === "add-save"){
+            location.replace("http://localhost/idea/index.php?"+ search);
+        }
+        else{
+            location.replace("http://localhost/idea/saves.php?id=" + $(this).attr("id") + "&" + search);
+        }
+
+    })
+    $("#save").click(function () {
+        save().then((response) => console.log(response));
+    })
+    $("#save-right").click(function () {
+        carousel.next();
+    })
+    $("#save-left").click(function () {
+        carousel.prev();
+    })
+    $("#hide-saves").click(function () {
+        if($("#saves-box").css("display") === "none"){
+            $("#saves-box").css("display", "flex");
+            $(".save-move").css("display", "flex");
+            $("#content").css("height", "calc(100% - 278px)");
+            $("#hide-saves").html("keyboard_arrow_up");
+        }
+        else{
+            $("#saves-box").css("display", "none");
+            $(".save-move").css("display", "none");
+            $("#content").css("height", "calc(100% - 58px)");
+            $("#hide-saves").html("keyboard_arrow_down");
+        }
     })
 })

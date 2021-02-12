@@ -21,13 +21,13 @@ else{
         if(password_verify($_POST['password'], $user['password'])){
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['name'];
-            header("Location: index.php");
+            header("Location: ../../index.php");
         }
         else{
 
         }
     }
     else{
-        header("Location: index.php");
+        header("Location: ../../index.php");
     }
 }

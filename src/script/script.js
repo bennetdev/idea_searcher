@@ -7,12 +7,14 @@ async function save() {
 function get_current_json(){
     var word = $("#word").text().trim();
     var words = $(".input-word");
-    var json = {word: word, words: []}
+    var current_id = id == null ? "-1" : id;
+    var json = {word: word, words: [], current_id: current_id}
     for (var i = 0; i < words.length; i++){
         var value = $(words[i]).val();
         var left = $(words[i]).position().left;
         var top = $(words[i]).position().top;
-        json.words.push({word: value, left: left, top: top})
+        var is_new = $(words[i]).data("new");
+        json.words.push({word: value, left: left, top: top, new: is_new})
     }
     return json;
 }
@@ -55,7 +57,7 @@ function json_to_page(json){
 }
 function append_input(left, top, word){
     var top_calc = top - $("#content").position().top;
-    $("#content").append("<input type='text' placeholder='input' class='input-word' style='position: absolute; left: " + left + "; top: " + top_calc + "' value='" + word + "'>");
+    $("#content").append("<input type='text' data-new=true placeholder='input' class='input-word' style='position: absolute; left: " + left + "; top: " + top_calc + "' value='" + word + "'>");
     $("#content input:last-child").focus();
     $("#content").scrollLeft(0);
 }

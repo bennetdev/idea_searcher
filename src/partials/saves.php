@@ -1,11 +1,15 @@
 <?php
+if(!isset($_SESSION)){
+    session_start();
+}
+
 $db = new PDO('mysql:dbname=idea;host=localhost', 'root', '');
 $savesQuery = $db->prepare("
     SELECT * FROM saves
     WHERE user_id = :user_id
 ");
 $savesQuery->execute([
-    'user_id' => 1
+    'user_id' => $_SESSION["user_id"]
 ]);
 
 $saves = $savesQuery->rowCount() ? $savesQuery->fetchAll(\PDO::FETCH_ASSOC) : [];

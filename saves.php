@@ -24,7 +24,8 @@ $inputs = $inputQuery->rowCount() ? $inputQuery->fetchAll(\PDO::FETCH_ASSOC) : [
 
 <html>
 <script>
-    search = "<?php echo 'lang='.$_GET["lang"] ?>"
+    search = "<?php echo 'lang='.$_GET["lang"] ?>";
+    id = "<?php echo $_GET["id"] ?>";
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
@@ -53,7 +54,7 @@ $inputs = $inputQuery->rowCount() ? $inputQuery->fetchAll(\PDO::FETCH_ASSOC) : [
         </div>
     </div>
     <?php foreach ($inputs as $input) { ?>
-        <input type='text' placeholder='input' class='input-word' style='position: absolute; left: <?php echo $input["left_val"]."px" ?>; top: <?php echo $input["top_val"]."px" ?>' value="<?php echo $input["word"] ?>">
+        <input type='text' data-new="false" placeholder='input' class='input-word' style='position: absolute; left: <?php echo $input["left_val"]."px" ?>; top: <?php echo $input["top_val"]."px" ?>' value="<?php echo $input["word"] ?>">
     <?php } ?>
 </div>
 </body>
